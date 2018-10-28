@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall
+CFLAGS = -Wall -Werror
 DOCGEN = doxygen
 SOURCES = $(wildcard src/*.c)
 OBJETS = $(SOURCES:src/%.c=%.o)
@@ -25,6 +25,8 @@ dist:
 	tar -J -cf project_sushko_td3.tar.xz grilles/ include/ src/ Makefile Doxyfile
 
 clean: 
+	rm -r html
+	rm -r latex
 	rm obj/*
 	rm bin/*
 
