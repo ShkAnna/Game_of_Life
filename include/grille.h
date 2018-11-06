@@ -1,6 +1,6 @@
 /**
  * \file grille.h
- * \brief travail sur les grilles
+ * \brief Travail sur les grilles
  *
  */
 
@@ -27,14 +27,14 @@ typedef struct {int nbl; int nbc; int** cellules;} grille;
  *
  * @param[in]  l     nombre des lignes
  * @param[in]  c     nombres des colonnes
- * @param      g     une structure de grille
+ * @param      g     un pointeur sur une grille
  */
 void alloue_grille (int l, int c, grille* g);
 
 /**
  * @brief      Libère une grille
  *
- * @param      g     une structure de grille
+ * @param      g     un pointeur sur une grille
  */
 void libere_grille (grille* g);
 
@@ -42,44 +42,44 @@ void libere_grille (grille* g);
  * @brief      Alloue et initalise la grille g à partir d'un fichier
  *
  * @param      filename  nom du fichier avec la grille
- * @param      g         une structure de grille
+ * @param      g         une grille
  */
 void init_grille_from_file (char * filename, grille* g);
 
 /**
- * @brief      Rend vivante la cellule (i,j) de la grille g
+ * @brief      Rend vivante la cellule de coordonnées (i,j) de la grille g
  *
- * @param[in]  i     une variable compteur
- * @param[in]  j     une variable compteur
- * @param[in]  g     une structure de grille
+ * @param[in]  i     indice de la ligne
+ * @param[in]  j     indice de la colonne
+ * @param[in]  g     une grille
  */
 static inline void set_vivante(int i, int j, grille g){g.cellules[i][j] = 1;}
 
 /**
  * @brief      Rend morte la cellule (i,j) de la grille g
  *
- * @param[in]  i     une variable compteur
- * @param[in]  j     une variable compteur
- * @param[in]  g     une structure de grille
+ * @param[in]  i     indice de la ligne
+ * @param[in]  j     indice de la colonne
+ * @param[in]  g     une grille
  */
 static inline void set_morte(int i, int j, grille g){g.cellules[i][j] = 0;}
 
 /**
  * @brief      Teste si la cellule (i,j) de la grille g est vivante
  *
- * @param[in]  i     une variable compteur
- * @param[in]  j     une variable compteur
- * @param[in]  g     une structure de grille
+ * @param[in]  i     indice de la ligne
+ * @param[in]  j     indice de la colonne
+ * @param[in]  g     une grille
  *
  * @return     { description_of_the_return_value }
  */
 static inline int est_vivante(int i, int j, grille g){return g.cellules[i][j] == 1;}
 
 /**
- * @brief      recopie gs dans gd (sans allocation)
+ * @brief      Recopie gs dans gd (sans allocation)
  *
- * @param[in]  gs    nouveau grille
- * @param[in]  gd    ancienne grille
+ * @param[in]  gs    une grille
+ * @param[in]  gd    copie de grille gs
  */
 void copie_grille (grille gs, grille gd);
 

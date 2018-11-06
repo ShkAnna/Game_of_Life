@@ -1,17 +1,42 @@
+/**
+ * \file jeu.h
+ * \brief Fonctions permettant l'avancement du jeu
+ *
+ */
 #ifndef __JEU_H
 #define __JEU_H
 
 #include "grille.h"
 
-/// modulo modifié pour traiter correctement les bords i=0 et j=0
-/// dans le calcul des voisins avec bords cycliques
+/**
+ * @brief      Modulo modifié pour traiter correctement les bords i=0 et j=0 \n
+ * 			   dans le calcul des voisins avec bords cycliques.
+ *
+ * @param[in]  i     indice de la ligne / colonne
+ * @param[in]  m     nombre de lignes / colonnes de la grille
+ *
+ * @return     modulo de deux parametres
+ */
 static inline int modulo(int i, int m) {return (i+m)%m;}
 
-/// compte le nombre de voisins vivants de la cellule (i,j)
-/// les bords sont cycliques.
+/**
+ * @brief      Compte le nombre de voisins vivants de la cellule (i,j). \n
+ * 			   Les bords sont cycliques.
+ *
+ * @param[in]  i     indice de la ligne
+ * @param[in]  j     indice de la colonne
+ * @param[in]  g     une grille
+ *
+ * @return     nombre des voisins vivants
+ */
 int compte_voisins_vivants (int i, int j, grille g);
 
-/// fait évoluer la grille g d'un pas de temps
+/**
+ * @brief      Fait évoluer la grille g d'un pas de temps.
+ *
+ * @param      g     une grille
+ * @param      gc    une grille alloue avec même espace memoire que la grille g
+ */
 void evolue (grille *g, grille *gc);
 
 #endif

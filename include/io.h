@@ -1,3 +1,8 @@
+/**
+ * \file io.h
+ * \brief Affichage des grilles
+ *
+ */
 #ifndef __IO_H
 #define __IO_H
 
@@ -5,19 +10,41 @@
 #include "grille.h"
 #include "jeu.h"
 
-/// affichage d'un trait horizontal
+/**
+ * @brief      Affichage d'un trait horizontal
+ *
+ * @param[in]  c     taille d'un trait horizontal
+ */
 void affiche_trait (int c);
 
-/// affichage d'une ligne de la grille
+/**
+ * @brief      Affichage d'une ligne de la grille
+ *
+ * @param[in]  c      taille d'un trait horizontal
+ * @param      ligne  un pointeur sur la ligne à afficher
+ */
 void affiche_ligne (int c, int* ligne);
 
-/// affichage d'une grille
+/**
+ * @brief      Affichage d'une grille
+ *
+ * @param[in]  g     une grille
+ */
 void affiche_grille (grille g);
 
-/// effacement d'une grille
+/**
+ * @brief      Effacement d'une grille
+ *
+ * @param[in]  g     une grille
+ */
 void efface_grille (grille g);
 
-/// debute le jeu
+/**
+ * @brief      Debute le jeu
+ *
+ * @param      g     une grille
+ * @param      gc    la grille avec la même taille de memoire comme grille g
+ */
 void debut_jeu(grille *g, grille *gc);
 
 #endif
