@@ -22,10 +22,12 @@ doc :
 	$(DOCGEN)
 
 dist:
-	tar -J -cf project_sushko_td3.tar.xz grilles/ include/ src/ Makefile Doxyfile
+	mkdir -p dist/
+	tar -J -cf dist/SushkoAnna-GoL-v0.2.tar.xz grilles/ include/ src/ Makefile Doxyfile
 
 clean:
 	rm -rf html
 	rm -rf latex
 	rm -f obj/*
 	rm -f bin/*
+	rm -f dist/*
