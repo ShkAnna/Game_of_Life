@@ -48,7 +48,10 @@ int compte_voisins_vivants_noncyclique (int i, int j, grille g);
  *
  * @param      g     une grille
  * @param      gc    une grille alloue avec même espace memoire que la grille g
+ * @param      compte_voisins_vivants pointeur sur une fonction qui compte les voisins vivants d'une cellule
+ * @param      vieillissement détermine si le vieillissement est activé ou désactivé
  */
+
 void evolue (grille *g, grille *gc, int (*compte_voisins_vivants) (int, int, grille), int vieillissement);
 
 #endif

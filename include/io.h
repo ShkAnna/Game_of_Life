@@ -28,7 +28,10 @@ void affiche_ligne (int c, int* ligne);
 /**
  * @brief      Affichage d'une grille
  *
- * @param[in]  g     une grille
+ * @param[in]  g               une grille
+ * @param[in]  temps           temps d'évolution
+ * @param[in]  cyclique        Type de voisinage (cyclique / non-cyclique)
+ * @param[in]  vieillissement  Vieillissement on /off
  */
 void affiche_grille (grille g, int temps, int cyclique, int vieillissement);
 
