@@ -32,7 +32,7 @@ int compte_voisins_vivants_noncyclique (int i, int j, grille g){
 	return v;
 }
 
-void evolue (grille *g, grille *gc, int (*compte_voisins_vivants) (int, int, grille)){
+void evolue (grille *g, grille *gc, int (*compte_voisins_vivants) (int, int, grille), int vieillissement){
 	copie_grille (*g,*gc); // copie temporaire de la grille
 	int i,j,l=g->nbl, c = g->nbc,v;
 	for (i=0; i<l; i++)
@@ -42,8 +42,16 @@ void evolue (grille *g, grille *gc, int (*compte_voisins_vivants) (int, int, gri
 			v = compte_voisins_vivants (i, j, *gc);
 			if (est_vivante(i,j,*g))
 			{ // evolution d'une cellule vivante
-				g->cellules[i][j]++;
-				if ( (v!=2 && v!= 3) || g->cellules[i][j] > 7) set_morte(i,j,*g);
+				if (vieillissement == 0)
+				{
+					g->cellules[i][j] = 0;
+					if (v!=2 && v!= 3) set_morte(i,j,*g);
+				}
+				else
+				{
+					g->cellules[i][j]++;
+					if ( (v!=2 && v!= 3) || g->cellules[i][j] > 7) set_morte(i,j,*g);
+				}
 			}
 			else
 			{ // evolution d'une cellule morte
