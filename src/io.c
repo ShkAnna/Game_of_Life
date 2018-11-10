@@ -19,6 +19,7 @@ void affiche_ligne (int c, int* ligne){
 void affiche_grille (grille g, int temps, int cyclique){
 	int i, l=g.nbl, c=g.nbc;
 	printf("\n");
+	printf("\e[K");
 	printf("Temps d'evolution: %d; Type de voisinage: ", temps);
 	if (cyclique == 1) printf("cyclique\n\n");
 	else printf("non-cyclique\n\n");
@@ -64,6 +65,7 @@ void debut_jeu(grille *g, grille *gc){
 				init_grille_from_file(nom,g);
 				alloue_grille (g->nbl, g->nbc, gc);
 				affiche_grille(*g, temps, cyclique);
+				printf("\n");
 				break;
 			}
 
