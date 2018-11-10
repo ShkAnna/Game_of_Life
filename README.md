@@ -13,6 +13,14 @@ Ce [dépôt](https://git.unistra.fr/sushko/Jeu_de_la_vie) contient mon projet du
 | Doxyfile | Fichier de configuration de doxygen (permettant de générer la documentation) |
 | Makefile | Fichier contenant un ensemble d'actions propres au projet (compilation, suppression des artefacts, etc.) |
 
+# Les commandes de programme
+
+| Commande | Description |
+| ------ | ------ |
+| n | Changer le fichier avec la grille |
+| c | Changer le type de voisinage (cyclique / non-cyclique) |
+| v | Activer / désactiver le vieillissement |
+
 Générer la documentation
 ------------------------
 ~~~{.sh}
@@ -32,5 +40,5 @@ make dist
 ~~~
 
 ### Versions
-* v0.1 - Premier partie du projet
-
+* v0.1 - Première partie du projet
+* v0.2 - Deuxième partie du projet
