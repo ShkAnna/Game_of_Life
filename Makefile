@@ -30,4 +30,4 @@ clean:
 	rm -rf latex
 	rm -f obj/*
 	rm -f bin/*
-	rm -f dist/*
+	rm -rf dist
