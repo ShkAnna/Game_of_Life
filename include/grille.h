@@ -13,9 +13,9 @@
 
 /** @struct grille
  *  @brief Structure de notre grille
- *  @var grille::nbl 
+ *  @var grille::nbl
  *  Nombre de lignes de la grille
- *  @var grille::nbc 
+ *  @var grille::nbc
  *  Nombre de colonnes de la grille
  *  @var grille::cellules
  *  Tableau de tableau de cellules
@@ -53,7 +53,7 @@ void init_grille_from_file (char * filename, grille* g);
  * @param[in]  j     indice de la colonne
  * @param[in]  g     une grille
  */
-static inline void set_vivante(int i, int j, grille g){g.cellules[i][j] = 1;}
+static inline void set_vivante(int i, int j, grille g){g.cellules[i][j] = 0;}
 
 /**
  * @brief      Rend morte la cellule (i,j) de la grille g
@@ -62,7 +62,7 @@ static inline void set_vivante(int i, int j, grille g){g.cellules[i][j] = 1;}
  * @param[in]  j     indice de la colonne
  * @param[in]  g     une grille
  */
-static inline void set_morte(int i, int j, grille g){g.cellules[i][j] = 0;}
+static inline void set_morte(int i, int j, grille g){g.cellules[i][j] = -1;}
 
 /**
  * @brief      Teste si la cellule (i,j) de la grille g est vivante
@@ -73,7 +73,7 @@ static inline void set_morte(int i, int j, grille g){g.cellules[i][j] = 0;}
  *
  * @return     { description_of_the_return_value }
  */
-static inline int est_vivante(int i, int j, grille g){return g.cellules[i][j] == 1;}
+static inline int est_vivante(int i, int j, grille g){return g.cellules[i][j] >= 0;}
 
 /**
  * @brief      Recopie gs dans gd (sans allocation)
