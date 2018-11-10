@@ -8,7 +8,7 @@ OBJETS_CHEM = $(SOURCES:src/%.c=obj/%.o)
 vpath %.c src
 vpath %.h include
 vpath %.o obj
- 
+
 main : $(OBJETS)
 	@echo "\n==== Linking ===="
 	mkdir -p bin/
@@ -21,13 +21,11 @@ main : $(OBJETS)
 doc :
 	$(DOCGEN)
 
-dist: 
+dist:
 	tar -J -cf project_sushko_td3.tar.xz grilles/ include/ src/ Makefile Doxyfile
 
-clean: 
-	rm -r html
-	rm -r latex
-	rm obj/*
-	rm bin/*
-
-
+clean:
+	rm -rf html
+	rm -rf latex
+	rm -f obj/*
+	rm -f bin/*

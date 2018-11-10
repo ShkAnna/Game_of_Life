@@ -22,7 +22,7 @@ make doc
 Exécuter le programme
 ------------------------
 ~~~{.sh}
-./bin/make grilles/grille1.txt
+./bin/main grilles/grille1.txt
 ~~~
 
 Créer l'archive du projet

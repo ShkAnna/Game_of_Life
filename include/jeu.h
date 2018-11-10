@@ -29,7 +29,19 @@ static inline int modulo(int i, int m) {return (i+m)%m;}
  *
  * @return     nombre des voisins vivants
  */
-int compte_voisins_vivants (int i, int j, grille g);
+int compte_voisins_vivants_cyclique (int i, int j, grille g);
+
+/**
+ * @brief      Compte le nombre de voisins vivants de la cellule (i,j). \n
+ * 			   Les bords sont non-cycliques.
+ *
+ * @param[in]  i     indice de la ligne
+ * @param[in]  j     indice de la colonne
+ * @param[in]  g     une grille
+ *
+ * @return     nombre des voisins vivants
+ */
+int compte_voisins_vivants_noncyclique (int i, int j, grille g);
 
 /**
  * @brief      Fait évoluer la grille g d'un pas de temps.
@@ -37,6 +49,6 @@ int compte_voisins_vivants (int i, int j, grille g);
  * @param      g     une grille
  * @param      gc    une grille alloue avec même espace memoire que la grille g
  */
-void evolue (grille *g, grille *gc);
+void evolue (grille *g, grille *gc, int (*compte_voisins_vivants) (int, int, grille));
 
 #endif

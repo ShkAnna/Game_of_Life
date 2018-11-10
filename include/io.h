@@ -30,7 +30,7 @@ void affiche_ligne (int c, int* ligne);
  *
  * @param[in]  g     une grille
  */
-void affiche_grille (grille g);
+void affiche_grille (grille g, int temps, int cyclique);
 
 /**
  * @brief      Effacement d'une grille
