@@ -48,6 +48,7 @@ void debut_jeu(grille *g, grille *gc){
 	int (*compte_voisins_vivants) (int, int, grille) = compte_voisins_vivants_cyclique;
 	int vieillissement = 0;
 	int nouvelleGrille = 0;
+	char fname[100] = "grilles/grille";
 
 	while (c != 'q') // touche 'q' pour quitter
 	{
@@ -70,11 +71,14 @@ void debut_jeu(grille *g, grille *gc){
 
 			case 'n' :
 			{//touche pour chargee dynamiquement le nom du nouveau grille
-				printf("Ecris grilles/ et le nom de grille laquelle tu veux charger (grille1.txt/grille2.txt...): ");
+				printf("Ecris numero de grille laquelle tu veux charger (de 1 à 8): ");
 				scanf("%s", nom);
+				strcat(fname, nom);
+				strcat(fname, ".txt");
 				libere_grille(g);
+				libere_grille(gc);
 				temps = 0;
-				init_grille_from_file(nom,g);
+				init_grille_from_file(fname,g);
 				alloue_grille (g->nbl, g->nbc, gc);
 				affiche_grille(*g, temps, cyclique, vieillissement);
 				nouvelleGrille = 1;
