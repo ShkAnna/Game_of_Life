@@ -60,6 +60,7 @@ void debut_jeu(grille *g, grille *gc){
 				printf("Ecris grilles/ et le nom de grille laquelle tu veux charger (grille1.txt/grille2.txt...): ");
 				scanf("%s", nom);
 				libere_grille(g);
+				temps = 0;
 				init_grille_from_file(nom,g);
 				alloue_grille (g->nbl, g->nbc, gc);
 				affiche_grille(*g, temps, cyclique);
