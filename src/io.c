@@ -47,16 +47,24 @@ void debut_jeu(grille *g, grille *gc){
 	int cyclique = 1;
 	int (*compte_voisins_vivants) (int, int, grille) = compte_voisins_vivants_cyclique;
 	int vieillissement = 0;
+	int nouvelleGrille = 0;
 
 	while (c != 'q') // touche 'q' pour quitter
 	{
 		switch (c) {
 			case '\n' :
 			{ // touche "entree" pour évoluer
-				evolue(g,gc,compte_voisins_vivants,vieillissement);
-				efface_grille(*g);
-				affiche_grille(*g, temps, cyclique, vieillissement);
-				temps++;
+				if (nouvelleGrille == 0)
+				{
+					evolue(g,gc,compte_voisins_vivants,vieillissement);
+					efface_grille(*g);
+					affiche_grille(*g, temps, cyclique, vieillissement);
+					temps++;
+				}
+				else
+				{
+					nouvelleGrille = 0;
+				}
 				break;
 			}
 
@@ -69,7 +77,7 @@ void debut_jeu(grille *g, grille *gc){
 				init_grille_from_file(nom,g);
 				alloue_grille (g->nbl, g->nbc, gc);
 				affiche_grille(*g, temps, cyclique, vieillissement);
-				printf("\n");
+				nouvelleGrille = 1;
 				break;
 			}
 
