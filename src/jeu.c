@@ -40,22 +40,24 @@ void evolue (grille *g, grille *gc, int (*compte_voisins_vivants) (int, int, gri
 		for (j=0; j<c; ++j)
 		{
 			v = compte_voisins_vivants (i, j, *gc);
-			if (est_vivante(i,j,*g))
-			{ // evolution d'une cellule vivante
-				if (vieillissement == 0)
-				{
-					g->cellules[i][j] = 0;
-					if (v!=2 && v!= 3) set_morte(i,j,*g);
+			if(!est_non_viable(i,j,*g)) {
+				if (est_vivante(i,j,*g))
+				{ // evolution d'une cellule vivante
+					if (vieillissement == 0)
+					{
+						g->cellules[i][j] = 0;
+						if (v!=2 && v!= 3) set_morte(i,j,*g);
+					}
+					else
+					{
+						g->cellules[i][j]++;
+						if ( (v!=2 && v!= 3) || g->cellules[i][j] > 7) set_morte(i,j,*g);
+					}
 				}
 				else
-				{
-					g->cellules[i][j]++;
-					if ( (v!=2 && v!= 3) || g->cellules[i][j] > 7) set_morte(i,j,*g);
+				{ // evolution d'une cellule morte
+					if ( v==3 ) set_vivante(i,j,*g);
 				}
-			}
-			else
-			{ // evolution d'une cellule morte
-				if ( v==3 ) set_vivante(i,j,*g);
 			}
 		}
 	}

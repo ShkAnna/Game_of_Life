@@ -56,6 +56,24 @@ void init_grille_from_file (char * filename, grille* g);
 static inline void set_vivante(int i, int j, grille g){g.cellules[i][j] = 0;}
 
 /**
+ * @brief      Rend la cellule non-viable de coordonnées (i,j) de la grille g
+ *
+ * @param[in]  i     indice de la ligne
+ * @param[in]  j     indice de la colonne
+ * @param[in]  g     une grille
+ */
+static inline void set_non_viable(int i, int j, grille g){g.cellules[i][j] = -1;}
+
+/**
+ * @brief      Teste si la cellule (i,j) de la grille g est non-viable
+ *
+ * @param[in]  i     indice de la ligne
+ * @param[in]  j     indice de la colonne
+ * @param[in]  g     une grille
+ */
+static inline int est_non_viable(int i, int j, grille g){return g.cellules[i][j] == -1;}
+
+/**
  * @brief      Rend morte la cellule (i,j) de la grille g
  *
  * @param[in]  i     indice de la ligne
