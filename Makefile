@@ -26,8 +26,6 @@ dist:
 	tar -J -cf dist/SushkoAnna-GoL-v0.2.tar.xz grilles/ include/ src/ Makefile Doxyfile
 
 clean:
-	rm -rf html
-	rm -rf latex
 	rm -f obj/*
 	rm -f bin/*
-	rm -rf dist
+	rm -rf dist doc
