@@ -42,3 +42,4 @@ make dist
 ### Versions
 * v0.1 - Première partie du projet
 * v0.2 - Deuxième partie du projet
+* v0.3 - Troisième partie du projet
