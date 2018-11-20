@@ -1,5 +1,7 @@
 CC = gcc
 CFLAGS = -Wall -Werror
+CPPFLAGS += -Iinclude -I/usr/include/cairo
+LDFLAGS += -lcairo -lm -lX11
 DOCGEN = doxygen
 SOURCES = $(wildcard src/*.c)
 OBJETS = $(SOURCES:src/%.c=%.o)
@@ -12,7 +14,7 @@ vpath %.o obj
 main : $(OBJETS)
 	@echo "\n==== Linking ===="
 	mkdir -p bin/
-	$(CC) $(CFLAGS) -o bin/$@ $(OBJETS_CHEM)
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS)-o bin/$@ $(OBJETS_CHEM)
 
 %.o : %.c
 	mkdir -p obj/
