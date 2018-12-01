@@ -5,7 +5,6 @@ LDFLAGS += -lcairo -lm -lX11
 DOCGEN = doxygen
 SOURCES = $(wildcard src/*.c)
 OBJETS = $(SOURCES:src/%.c=%.o)
-OBJETS_CHEM = $(SOURCES:src/%.c=obj/%.o)
 MODE = GUI
 
 vpath %.c src
@@ -15,7 +14,10 @@ vpath %.o obj
 main : $(OBJETS)
 	@echo "\n==== Linking ===="
 	mkdir -p bin/
-	$(CC) -D$(MODE) $(CFLAGS) -o bin/$@ $(OBJETS_CHEM) $(LDFLAGS)
+	mkdir -p lib/
+	ar -crv lib/libjeu.a obj/grille.o obj/jeu.o
+	ranlib lib/libjeu.a
+	$(CC) -D$(MODE) $(CFLAGS) -o bin/$@ obj/main.o obj/io.o $(LDFLAGS) -ljeu -L lib/
 
 %.o : %.c
 	mkdir -p obj/
@@ -31,4 +33,5 @@ dist:
 clean:
 	rm -f obj/*
 	rm -f bin/*
+	rm -f lib/*
 	rm -rf dist doc
