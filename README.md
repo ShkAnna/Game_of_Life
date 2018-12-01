@@ -15,16 +15,35 @@ Ce [dépôt](https://git.unistra.fr/sushko/Jeu_de_la_vie) contient mon projet du
 
 # Les commandes de programme
 
+En mode graphique, les touchées correspondent au clavier QWERTY.
+
 | Commande | Description |
 | ------ | ------ |
+| Entree / clic gauche | Evoluer la grille |
+| q / clic droit | Quitter le jeu |
 | n | Changer le fichier avec la grille |
 | c | Changer le type de voisinage (cyclique / non-cyclique) |
 | v | Activer / désactiver le vieillissement |
+| o | Tester oscillation |
 
 Générer la documentation
 ------------------------
 ~~~{.sh}
 make doc
+~~~
+
+Pour compiler le programme - en mode graphique (par défaut)
+------------------------
+~~~{.sh}
+make
+~~~
+
+**Si on change le MODE, il faut d'abord faire "make clean"**
+
+Pour compiler le programme - en mode texte
+------------------------
+~~~{.sh}
+make MODE=TEXTE
 ~~~
 
 Exécuter le programme
