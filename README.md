@@ -43,3 +43,5 @@ make dist
 * v0.1 - Première partie du projet
 * v0.2 - Deuxième partie du projet
 * v0.3 - Troisième partie du projet
+* v0.4 - Quatrième partie du projet
+* v0.5 - Cinquième partie du projet
