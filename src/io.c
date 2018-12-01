@@ -152,13 +152,11 @@ void showText(cairo_surface_t *surface, XEvent e, Display *dpy, char* nom){
 }
 
 void debut_jeu(grille *g, grille *gc){
-	//char c = getchar();
 	char nom[10];
 	int temps = 0;
 	int cyclique = 1;
 	int (*compte_voisins_vivants) (int, int, grille) = compte_voisins_vivants_cyclique;
 	int vieillissement = 0;
-	//int nouvelleGrille = 0;
 	FILE * fileexists = NULL;
 
 	Display *dpy;
@@ -191,72 +189,66 @@ void debut_jeu(grille *g, grille *gc){
 		XNextEvent(dpy, &e);
 		if(e.type==Expose && e.xexpose.count<1) {
 			paint(cs, *g, temps, cyclique, vieillissement);
-		} else if (e.type == KeyPress) {
-			if(e.xkey.keycode==36) { // \n
+		} else if (e.type == KeyPress || e.type == ButtonPress) {
+			if(e.xkey.keycode==36 || e.xbutton.button==1) { // \n
+				temps++;
+				evolue(g,gc,compte_voisins_vivants,vieillissement);
+				efface_grille(*g);
+				paint(cs, *g, temps, cyclique, vieillissement);
+				affiche_grille(*g, temps, cyclique, vieillissement);
 
-					temps++;
-					evolue(g,gc,compte_voisins_vivants,vieillissement);
-					efface_grille(*g);
-					paint(cs, *g, temps, cyclique, vieillissement);
-					affiche_grille(*g, temps, cyclique, vieillissement);
 			} else if(e.xkey.keycode==57) {//n + touche pour chargee dynamiquement le nom du nouveau grille
-					char fname[100] = "grilles/grille";
-					do {
-						paint(cs, *g, temps, cyclique, vieillissement);
-						showText(cs, e, dpy, nom);
-						strcat(fname, nom);
-						strcat(fname, ".txt");
-						fileexists = fopen(fname, "r");
-						if (fileexists == NULL) {
-							strcpy(nom, "");
-							strcpy(fname, "grilles/grille");
-						}
-					} while(fileexists == NULL);
-					fclose(fileexists);
-					fileexists = NULL;
-
-					libere_grille(g);
-					libere_grille(gc);
-					temps = 0;
-					init_grille_from_file(fname, g);
-
-					alloue_grille (g->nbl, g->nbc, gc);
+				char fname[100] = "grilles/grille";
+				do {
 					paint(cs, *g, temps, cyclique, vieillissement);
-					affiche_grille(*g, temps, cyclique, vieillissement);
-					// nouvelleGrille = 1;
-					strcpy(nom, "");
-					strcpy(fname, "grilles/grille");
-				} else if (e.xkey.keycode==54) { // c + touche pour changer le type de voisinage
-					if (cyclique == 1)
-					{
-						compte_voisins_vivants = compte_voisins_vivants_noncyclique;
-						cyclique = 0;
+					showText(cs, e, dpy, nom);
+					strcat(fname, nom);
+					strcat(fname, ".txt");
+					fileexists = fopen(fname, "r");
+					if (fileexists == NULL) {
+						strcpy(nom, "");
+						strcpy(fname, "grilles/grille");
 					}
-					else
-					{
-						compte_voisins_vivants = compte_voisins_vivants_cyclique;
-						cyclique = 1;
-					}
-					paint(cs, *g, temps, cyclique, vieillissement);
-				} else if(e.xkey.keycode==55) {// v
-					if (vieillissement == 0)
-					{
+				} while(fileexists == NULL);
+				fclose(fileexists);
+				fileexists = NULL;
 
-						vieillissement = 1;
-					}
-					else
-					{
+				libere_grille(g);
+				libere_grille(gc);
+				temps = 0;
+				init_grille_from_file(fname, g);
 
-						vieillissement = 0;
-					}
-					paint(cs, *g, temps, cyclique, vieillissement);
-				} else if (e.xkey.keycode==24) {//q
-					break;
-				} /*else { // touche non traitée
-					//printf("\n\e[1A");
-				}*/
+				alloue_grille (g->nbl, g->nbc, gc);
+				paint(cs, *g, temps, cyclique, vieillissement);
+				affiche_grille(*g, temps, cyclique, vieillissement);
+				strcpy(nom, "");
+				strcpy(fname, "grilles/grille");
+			} else if (e.xkey.keycode==54) { // c + touche pour changer le type de voisinage
+				if (cyclique == 1)
+				{
+					compte_voisins_vivants = compte_voisins_vivants_noncyclique;
+					cyclique = 0;
+				}
+				else
+				{
+					compte_voisins_vivants = compte_voisins_vivants_cyclique;
+					cyclique = 1;
+				}
+				paint(cs, *g, temps, cyclique, vieillissement);
+			} else if(e.xkey.keycode==55) {// v
+				if (vieillissement == 0)
+				{
+					vieillissement = 1;
+				}
+				else
+				{
+					vieillissement = 0;
+				}
+				paint(cs, *g, temps, cyclique, vieillissement);
+			} else if (e.xkey.keycode==24 || e.xbutton.button==3) {//q
+				break;
+			}
 		}
-		//c = getchar();
 	}
 	cairo_surface_destroy(cs);
 	XCloseDisplay(dpy);// close the display
