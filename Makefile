@@ -28,7 +28,7 @@ doc :
 
 dist:
 	mkdir -p dist/
-	tar -J -cf dist/SushkoAnna-GoL-v0.2.tar.xz grilles/ include/ src/ Makefile Doxyfile
+	tar -J -cf dist/SushkoAnna-GoL-v0.5.tar.xz grilles/ include/ src/ Makefile Doxyfile README.md
 
 clean:
 	rm -f obj/*
