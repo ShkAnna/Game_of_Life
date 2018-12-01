@@ -1,4 +1,4 @@
-#include<string.h>
+#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <cairo.h>
@@ -192,9 +192,6 @@ void debut_jeu(grille *g, grille *gc){
 		if(e.type==Expose && e.xexpose.count<1) {
 			paint(cs, *g, temps, cyclique, vieillissement);
 		} else if (e.type == KeyPress) {
-			/*if (e.xkey.keycode == 58) {
-				showText(cs, e, dpy);
-			}*/
 			if(e.xkey.keycode==36) { // \n
 
 					temps++;

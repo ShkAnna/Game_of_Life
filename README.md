@@ -30,7 +30,7 @@ make doc
 Exécuter le programme
 ------------------------
 ~~~{.sh}
-./bin/main grilles/grille1.txt
+./bin/main <numero de la grille>
 ~~~
 
 Créer l'archive du projet
