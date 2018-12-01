@@ -8,7 +8,7 @@
 
 #if GUI
 
-void paint(cairo_surface_t *surface, grille g, int temps, int cyclique, int vieillissement){
+void paint(cairo_surface_t *surface, grille g, int temps, int cyclique, int vieillissement, int oscil){
 	cairo_t *cr;
 	cr=cairo_create(surface);
 
@@ -32,6 +32,7 @@ void paint(cairo_surface_t *surface, grille g, int temps, int cyclique, int viei
 	double y;
 	int chiffre_cel;
 	char str_cel[50];
+	char str_oscil[50];
 	int i,j;
 
 	cairo_set_source_rgb (cr, 0.7, 0.7, 0.7);
@@ -52,6 +53,18 @@ void paint(cairo_surface_t *surface, grille g, int temps, int cyclique, int viei
 		cairo_show_text (cr,"Vieillissement: oui");
 	}else 
 		cairo_show_text (cr,"Vieillissement: non");
+
+	cairo_move_to (cr, SIZEX/2+50, 200);
+	if (oscil == -1)
+	{
+		cairo_show_text (cr, "Oscillante: o pour tester");
+	} else if (oscil == 0)
+	{
+		cairo_show_text (cr, "Oscillante: pas oscillante");
+	} else {
+		sprintf(str_oscil, "Oscillante: %d pas", oscil);
+		cairo_show_text (cr, str_oscil);
+	}
 
 	for(x_carre = 0.0, j=0;j<gc;++j) {
 		for(y_carre = 0.0, i=0;i<gl;++i) {
@@ -114,6 +127,7 @@ void debut_jeu(grille *g, grille *gc){
 	int cyclique = 1;
 	int (*compte_voisins_vivants) (int, int, grille) = compte_voisins_vivants_cyclique;
 	int vieillissement = 0;
+	int oscil = -1;
 	FILE * fileexists = NULL;
 
 	Display *dpy;
@@ -145,17 +159,17 @@ void debut_jeu(grille *g, grille *gc){
 	{
 		XNextEvent(dpy, &e);
 		if(e.type==Expose && e.xexpose.count<1) {
-			paint(cs, *g, temps, cyclique, vieillissement);
+			paint(cs, *g, temps, cyclique, vieillissement, oscil);
 		} else if (e.type == KeyPress || e.type == ButtonPress) {
 			if(e.xkey.keycode==36 || e.xbutton.button==1) { // \n
 				temps++;
 				evolue(g,gc,compte_voisins_vivants,vieillissement);
-				paint(cs, *g, temps, cyclique, vieillissement);
+				paint(cs, *g, temps, cyclique, vieillissement, oscil);
 
 			} else if(e.xkey.keycode==57) {//n + touche pour chargee dynamiquement le nom du nouveau grille
 				char fname[100] = "grilles/grille";
 				do {
-					paint(cs, *g, temps, cyclique, vieillissement);
+					paint(cs, *g, temps, cyclique, vieillissement, oscil);
 					showText(cs, e, dpy, nom);
 					strcat(fname, nom);
 					strcat(fname, ".txt");
@@ -171,10 +185,11 @@ void debut_jeu(grille *g, grille *gc){
 				libere_grille(g);
 				libere_grille(gc);
 				temps = 0;
+				oscil = -1;
 				init_grille_from_file(fname, g);
 
 				alloue_grille (g->nbl, g->nbc, gc);
-				paint(cs, *g, temps, cyclique, vieillissement);
+				paint(cs, *g, temps, cyclique, vieillissement, oscil);
 				strcpy(nom, "");
 				strcpy(fname, "grilles/grille");
 			} else if (e.xkey.keycode==54) { // c + touche pour changer le type de voisinage
@@ -188,7 +203,7 @@ void debut_jeu(grille *g, grille *gc){
 					compte_voisins_vivants = compte_voisins_vivants_cyclique;
 					cyclique = 1;
 				}
-				paint(cs, *g, temps, cyclique, vieillissement);
+				paint(cs, *g, temps, cyclique, vieillissement, oscil);
 			} else if(e.xkey.keycode==55) {// v
 				if (vieillissement == 0)
 				{
@@ -198,7 +213,31 @@ void debut_jeu(grille *g, grille *gc){
 				{
 					vieillissement = 0;
 				}
-				paint(cs, *g, temps, cyclique, vieillissement);
+				paint(cs, *g, temps, cyclique, vieillissement, oscil);
+			}else if (e.xkey.keycode==32) { //o
+				grille test_osc;
+				int i,j;
+				int compte_pas = 0;
+				int grilles_eg = 1;
+				alloue_grille(g->nbl, g->nbc, &test_osc);
+				copie_grille(*g,test_osc);
+				do{
+					grilles_eg = 1;
+					evolue(&test_osc, gc, compte_voisins_vivants, vieillissement);
+					compte_pas++;
+					for(i=0;i<g->nbl && grilles_eg == 1;i++) 
+					{
+						for(j=0;j<g->nbc && grilles_eg == 1;j++)
+						{
+							if(test_osc.cellules[i][j]!=g->cellules[i][j]) grilles_eg = 0;
+						}
+					}
+				}while(grilles_eg == 0 && compte_pas < 1000);
+
+				if(grilles_eg == 0) oscil = 0;
+				else oscil=compte_pas;
+
+				paint(cs, *g, temps, cyclique, vieillissement, oscil);
 			} else if (e.xkey.keycode==24 || e.xbutton.button==3) {//q
 				break;
 			}
@@ -226,7 +265,7 @@ void affiche_ligne (int c, int* ligne){
 	return;
 }
 
-void affiche_grille (grille g, int temps, int cyclique, int vieillissement){
+void affiche_grille (grille g, int temps, int cyclique, int vieillissement, int oscil){
 	int i, l=g.nbl, c=g.nbc;
 	printf("\n");
 	printf("\e[K");
@@ -234,8 +273,13 @@ void affiche_grille (grille g, int temps, int cyclique, int vieillissement){
 	if (cyclique == 1) printf("cyclique; ");
 	else printf("non-cyclique; ");
 	printf("Vieillissement: ");
-	if (vieillissement == 1) printf("oui\n\n");
-	else printf("non\n\n");
+	if (vieillissement == 1) printf("oui; ");
+	else printf("non; ");
+	printf("Oscillante: ");
+	if (oscil == -1) printf("o pour tester");
+	else if (oscil == 0) printf("non");
+	else printf("%d pas", oscil);
+	printf("\n\n");
 
 	affiche_trait(c);
 	for (i=0; i<l; ++i) {
@@ -254,6 +298,7 @@ void debut_jeu(grille *g, grille *gc){
 	char c = getchar();
 	char nom[100];
 	int temps = 1;
+	int oscil = -1;
 	int cyclique = 1;
 	int (*compte_voisins_vivants) (int, int, grille) = compte_voisins_vivants_cyclique;
 	int vieillissement = 0;
@@ -268,7 +313,7 @@ void debut_jeu(grille *g, grille *gc){
 				{
 					evolue(g,gc,compte_voisins_vivants,vieillissement);
 					efface_grille(*g);
-					affiche_grille(*g, temps, cyclique, vieillissement);
+					affiche_grille(*g, temps, cyclique, vieillissement,oscil);
 					temps++;
 				}
 				else
@@ -288,9 +333,10 @@ void debut_jeu(grille *g, grille *gc){
 				libere_grille(g);
 				libere_grille(gc);
 				temps = 0;
+				oscil = -1;
 				init_grille_from_file(fname,g);
 				alloue_grille (g->nbl, g->nbc, gc);
-				affiche_grille(*g, temps, cyclique, vieillissement);
+				affiche_grille(*g, temps, cyclique, vieillissement,oscil);
 				nouvelleGrille = 1;
 				break;
 			}
@@ -323,6 +369,31 @@ void debut_jeu(grille *g, grille *gc){
 					vieillissement = 0;
 				}
 				break;
+			}
+
+			case 'o':
+			{
+				grille test_osc;
+				int i,j;
+				int compte_pas = 0;
+				int grilles_eg = 1;
+				alloue_grille(g->nbl, g->nbc, &test_osc);
+				copie_grille(*g,test_osc);
+				do{
+					grilles_eg = 1;
+					evolue(&test_osc, gc, compte_voisins_vivants, vieillissement);
+					compte_pas++;
+					for(i=0;i<g->nbl && grilles_eg == 1;i++) 
+					{
+						for(j=0;j<g->nbc && grilles_eg == 1;j++)
+						{
+							if(test_osc.cellules[i][j]!=g->cellules[i][j]) grilles_eg = 0;
+						}
+					}
+				}while(grilles_eg == 0 && compte_pas < 1000);
+
+				if(grilles_eg == 0) oscil = 0;
+				else oscil=compte_pas;
 			}
 
 			default :

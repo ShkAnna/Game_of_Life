@@ -26,8 +26,9 @@
  * @param[in]  temps           temps d'évolution
  * @param[in]  cyclique        Type de voisinage (cyclique / non-cyclique)
  * @param[in]  vieillissement  Vieillissement on /off
+ * @param[in]  oscil           Oscillation (nombre de pas)
  */
-void paint(cairo_surface_t *surface, grille g, int temps, int cyclique, int vieillissement);
+void paint(cairo_surface_t *surface, grille g, int temps, int cyclique, int vieillissement, int oscil);
 
 /**
  * @brief      Affiche une proposition de changer la grille
@@ -63,8 +64,9 @@ void affiche_ligne (int c, int* ligne);
  * @param[in]  temps           temps d'évolution
  * @param[in]  cyclique        Type de voisinage (cyclique / non-cyclique)
  * @param[in]  vieillissement  Vieillissement on /off
+ * @param[in]  oscil           Oscillation (nombre de pas)
  */
-void affiche_grille (grille g, int temps, int cyclique, int vieillissement);
+void affiche_grille (grille g, int temps, int cyclique, int vieillissement, int oscil);
 
 /**
  * @brief      Effacement d'une grille

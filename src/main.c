@@ -25,7 +25,7 @@ char fname[100] = "grilles/grille";
 	alloue_grille (g.nbl, g.nbc, &gc);
 
 	#ifndef GUI
-		affiche_grille(g, 0, 1, 0);
+		affiche_grille(g, 0, 1, 0, -1);
 	#endif
 
 	debut_jeu(&g, &gc);
