@@ -215,26 +215,41 @@ void debut_jeu(grille *g, grille *gc){
 				}
 				paint(cs, *g, temps, cyclique, vieillissement, oscil);
 			}else if (e.xkey.keycode==32) { //o
-				grille test_osc;
+				grille osc_base, test_osc;
 				int i,j;
+				int nbr_evol = 0;
 				int compte_pas = 0;
 				int grilles_eg = 1;
+				int grille_vide = 1;
+				alloue_grille(g->nbl, g->nbc, &osc_base);
+				copie_grille(*g,osc_base);
 				alloue_grille(g->nbl, g->nbc, &test_osc);
 				copie_grille(*g,test_osc);
 				do{
-					grilles_eg = 1;
-					evolue(&test_osc, gc, compte_voisins_vivants, vieillissement);
-					compte_pas++;
-					for(i=0;i<g->nbl && grilles_eg == 1;i++) 
-					{
-						for(j=0;j<g->nbc && grilles_eg == 1;j++)
+					do{
+						grilles_eg = 1;
+						evolue(&test_osc, gc, compte_voisins_vivants, vieillissement);
+						compte_pas++;
+						for(i=0;i<g->nbl && grilles_eg == 1;i++) 
 						{
-							if(test_osc.cellules[i][j]!=g->cellules[i][j]) grilles_eg = 0;
+							for(j=0;j<g->nbc && grilles_eg == 1;j++)
+							{
+								if(test_osc.cellules[i][j]!=osc_base.cellules[i][j]) grilles_eg = 0;
+								if(test_osc.cellules[i][j]>=0) grille_vide = 0; 
+							}
 						}
+					}while(grilles_eg == 0 && compte_pas < 1000);
+					if(grilles_eg == 0)
+					{
+						compte_pas = 0;
+						grille_vide = 1;
+						evolue(&osc_base, gc, compte_voisins_vivants, vieillissement);
+						copie_grille(osc_base, test_osc);
+						nbr_evol++;
 					}
-				}while(grilles_eg == 0 && compte_pas < 1000);
+				}while(grilles_eg == 0 && nbr_evol < 500);
 
-				if(grilles_eg == 0) oscil = 0;
+				if(grilles_eg == 0 || grille_vide == 1) oscil = 0;
 				else oscil=compte_pas;
 
 				paint(cs, *g, temps, cyclique, vieillissement, oscil);
@@ -373,26 +388,41 @@ void debut_jeu(grille *g, grille *gc){
 
 			case 'o':
 			{
-				grille test_osc;
+				grille osc_base, test_osc;
 				int i,j;
+				int nbr_evol = 0;
 				int compte_pas = 0;
 				int grilles_eg = 1;
+				int grille_vide = 1;
+				alloue_grille(g->nbl, g->nbc, &osc_base);
+				copie_grille(*g,osc_base);
 				alloue_grille(g->nbl, g->nbc, &test_osc);
 				copie_grille(*g,test_osc);
 				do{
-					grilles_eg = 1;
-					evolue(&test_osc, gc, compte_voisins_vivants, vieillissement);
-					compte_pas++;
-					for(i=0;i<g->nbl && grilles_eg == 1;i++) 
-					{
-						for(j=0;j<g->nbc && grilles_eg == 1;j++)
+					do{
+						grilles_eg = 1;
+						evolue(&test_osc, gc, compte_voisins_vivants, vieillissement);
+						compte_pas++;
+						for(i=0;i<g->nbl && grilles_eg == 1;i++) 
 						{
-							if(test_osc.cellules[i][j]!=g->cellules[i][j]) grilles_eg = 0;
+							for(j=0;j<g->nbc && grilles_eg == 1;j++)
+							{
+								if(test_osc.cellules[i][j]!=osc_base.cellules[i][j]) grilles_eg = 0;
+								if(test_osc.cellules[i][j]>=0) grille_vide = 0; 
+							}
 						}
+					}while(grilles_eg == 0 && compte_pas < 1000);
+					if(grilles_eg == 0)
+					{
+						compte_pas = 0;
+						grille_vide = 1;
+						evolue(&osc_base, gc, compte_voisins_vivants, vieillissement);
+						copie_grille(osc_base, test_osc);
+						nbr_evol++;
 					}
-				}while(grilles_eg == 0 && compte_pas < 1000);
+				}while(grilles_eg == 0 && nbr_evol < 500);
 
-				if(grilles_eg == 0) oscil = 0;
+				if(grilles_eg == 0 || grille_vide == 1) oscil = 0;
 				else oscil=compte_pas;
 			}
 
