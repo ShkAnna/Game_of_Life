@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -Werror
+CFLAGS = -Wall -Werror -g
 CPPFLAGS += -Iinclude -I/usr/include/cairo
 LDFLAGS += -lcairo -lm -lX11
 DOCGEN = doxygen
@@ -14,11 +14,11 @@ vpath %.o obj
 main : $(OBJETS)
 	@echo "\n==== Linking ===="
 	mkdir -p bin/
-	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS)-o bin/$@ $(OBJETS_CHEM)
+	$(CC) $(CFLAGS) -o bin/$@ $(OBJETS_CHEM) $(LDFLAGS)
 
 %.o : %.c
 	mkdir -p obj/
-	$(CC) $(CFLAGS) -c -o obj/$@ $< -I include
+	$(CC) $(CFLAGS) -c -o obj/$@ $< -I include $(CPPFLAGS)
 
 doc :
 	$(DOCGEN)

@@ -7,6 +7,9 @@
 #define __IO_H
 
 #include <stdio.h>
+#include <cairo.h>
+#include <cairo-xlib.h>
+#include <X11/Xlib.h>
 #include "grille.h"
 #include "jeu.h"
 
@@ -41,6 +44,27 @@ void affiche_grille (grille g, int temps, int cyclique, int vieillissement);
  * @param[in]  g     une grille
  */
 void efface_grille (grille g);
+
+/**
+ * @brief      Affichage de la grille dans la fenetre X avec cairo
+ *
+ * @param      surface         Surface de cairo
+ * @param[in]  g               une grille
+ * @param[in]  temps           temps d'évolution
+ * @param[in]  cyclique        Type de voisinage (cyclique / non-cyclique)
+ * @param[in]  vieillissement  Vieillissement on /off
+ */
+void paint(cairo_surface_t *surface, grille g, int temps, int cyclique, int vieillissement);
+
+/**
+ * @brief      Affiche une proposition de changer la grille
+ *
+ * @param      surface  Surface de cairo
+ * @param      e        XEvent
+ * @param      dpy      Display
+ * @param      nom      Tableau de caractere 
+ */
+void showText(cairo_surface_t *surface, XEvent e, Display *dpy, char* nom);
 
 /**
  * @brief      Debute le jeu
