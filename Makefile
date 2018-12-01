@@ -6,6 +6,7 @@ DOCGEN = doxygen
 SOURCES = $(wildcard src/*.c)
 OBJETS = $(SOURCES:src/%.c=%.o)
 OBJETS_CHEM = $(SOURCES:src/%.c=obj/%.o)
+MODE = GUI
 
 vpath %.c src
 vpath %.h include
@@ -14,11 +15,11 @@ vpath %.o obj
 main : $(OBJETS)
 	@echo "\n==== Linking ===="
 	mkdir -p bin/
-	$(CC) $(CFLAGS) -o bin/$@ $(OBJETS_CHEM) $(LDFLAGS)
+	$(CC) -D$(MODE) $(CFLAGS) -o bin/$@ $(OBJETS_CHEM) $(LDFLAGS)
 
 %.o : %.c
 	mkdir -p obj/
-	$(CC) $(CFLAGS) -c -o obj/$@ $< -I include $(CPPFLAGS)
+	$(CC) -D$(MODE) $(CFLAGS) -c -o obj/$@ $< -I include $(CPPFLAGS)
 
 doc :
 	$(DOCGEN)

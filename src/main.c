@@ -8,9 +8,6 @@
 #include "io.h"
 #include "jeu.h"
 
-#define SIZEX 800
-#define SIZEY 800
-
 int main (int argc, char ** argv) {
 char fname[100] = "grilles/grille";
 	if (argc != 2 )
@@ -26,7 +23,10 @@ char fname[100] = "grilles/grille";
 
 	init_grille_from_file(fname,&g);
 	alloue_grille (g.nbl, g.nbc, &gc);
-	affiche_grille(g, 0, 1, 0);
+
+	#ifndef GUI
+		affiche_grille(g, 0, 1, 0);
+	#endif
 
 	debut_jeu(&g, &gc);
 	libere_grille(&g);
